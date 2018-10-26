@@ -85,18 +85,11 @@
             </div>
           </div>
 
-
-          <div class="float-left rightMenu">
-            <button
-              id="color"
-              class="btn cursorPointer"
-              :class="penTypeButtonClass"
-              @click="changePenType"
-              >
-              <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-              <span>{{ penTypeString }}</span>
-            </button>
-          </div>
+          <pen-type
+            :penType="penType"
+            :changePenType="changePenType"
+            >
+          </pen-type>
         </div>
       </div>
     </div>
@@ -166,22 +159,6 @@
   width: 1000px;
   margin-top: 10px;
   margin-left: 10px;
-}
-
-#canvasVue .rightMenu {
-  margin-left: 10px;
-}
-
-#canvasVue .penTypeColor {
-  font-weight: bold;
-  background-color: #3399FF;
-  color: #FFFFFF;
-}
-
-#canvasVue .penTypeBlack {
-  font-weight: bold;
-  background-color: #333A41;
-  color: #FFFFFF;
 }
 
 #canvasVue .strokeCount {
@@ -323,9 +300,12 @@
 
 <script>
 import HeaderNav from './HeaderNav.vue';
+import PenType from './PenType.vue';
+
 export default {
   components: {
     HeaderNav,
+    PenType,
   },
   data () {
     return({
@@ -362,36 +342,6 @@ export default {
     },
   },
   computed: {
-    penTypeString: function() {
-      switch(this.penType) {
-        case 'color':
-          return('色');
-          break;
-        case 'black':
-          return('黒');
-          break;
-        default:
-          break;
-      }
-      return('');
-    },
-    penTypeButtonClass: function() {
-      let obj = {
-        penTypeColor: false,
-        penTypeBlack: false,
-      };
-      switch(this.penType) {
-        case 'color':
-          obj.penTypeColor = true;
-          break;
-        case 'black':
-          obj.penTypeBlack = true;
-          break;
-        default:
-          break;
-      }
-      return(obj);
-    }
   },
   methods: {
     // ペンのタイプ変更
