@@ -299,8 +299,8 @@
 </style>
 
 <script>
-import HeaderNav from './HeaderNav.vue';
-import PenType from './PenType.vue';
+import HeaderNav from '~/components//HeaderNav.vue';
+import PenType from '~/components//PenType.vue';
 
 export default {
   components: {
