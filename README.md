@@ -1,2 +1,2 @@
-# smipaint
-すみぺいんと
+# smipaintpwa
+すみぺいんとぴーだぶりゅーえー
