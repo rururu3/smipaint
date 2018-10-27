@@ -7,6 +7,9 @@ module.exports = {
     name: 'すみぺいんとぴーだぶりゅーえー',
     lang: 'ja'
   },
+  // workbox: {
+  //   dev: true, //開発環境でもPWA
+  // },
   css: [
     '@fortawesome/fontawesome-free-webfonts',
     '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',

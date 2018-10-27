@@ -11,23 +11,6 @@
     </div>
   </b-modal>
 
-  <!-- 保存ダイアログ -->
-  <b-modal
-    id="modal-center"
-    ref="previewModalRef"
-    centered
-    ok-only
-    no-close-on-backdrop
-    title="Bootstrap-Vue"
-    size="lg sub"
-    @ok="previewCloseButtonClick"
-    >
-      <img class="previewImage" ref="previewImage" :src="imageBase64" />
-      <div class="saveText">
-       ↑ の画像を右クリックまたはタップ長押しで保存して下さい
-      </div>
-  </b-modal>
-
   <div class="contents">
     <div class="main">
       <div id="canvasVue" v-cloak>
@@ -66,14 +49,10 @@
             </div>
 
             <!-- 画像保存 -->
-            <div>
-              <button id="show-modal"
-                class="btn btn-outline-info cursorPointer tweetModalOpenButton"
-                @click="showModalButtonClick()"
-                >
-                画像を保存
-              </button>
-            </div>
+            <picture-preview
+              :canvas="canvas"
+              >
+            </picture-preview>
 
             <!-- 注意書き -->
             <div class="notice">
@@ -133,9 +112,6 @@
   padding: 0 0 0 0;
 }
 
-#canvasVue .cursorPointer {
-  cursor: pointer;
-}
 
 #canvasVue .times {
   color: #BBBBBB;
@@ -165,12 +141,6 @@
   font-size: 10pt;
 }
 
-#canvasVue .previewImage {
-  width: 100%;
-  margin-bottom: 10px;
-  border: 1px solid;
-}
-
 #canvasVue .tweetText {
   margin-bottom: 10px;
   border: 1px solid;
@@ -180,10 +150,6 @@
   line-height: 40px;
   vertical-align: middle;
   margin-right: 10px;
-}
-
-#canvasVue .tweetModalOpenButton {
-  margin-top: 10px;
 }
 
 #canvasVue .bottomMenuWrapper {
@@ -232,80 +198,18 @@
   margin-left: 5px;
   margin-right: 5px;
 }
-
-#canvasVue .modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
-}
-
-#canvasVue .modal-wrapper {
-  vertical-align: middle;
-  width: 600px;
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#canvasVue .modal-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 5px 5px;
-  background-color: #fff;
-  border-radius: 2px;
-  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-}
-
-#canvasVue .modal-header {
-  height: 20px;
-  background-color: #333A41;
-  width: 100%;
-  text-align: right;
-}
-
-#canvasVue .modal-enter {
-  opacity: 0;
-}
-
-#canvasVue .modal-leave-active {
-  opacity: 0;
-}
-
-#canvasVue .modal-enter .modal-container,
-#canvasVue .modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
-
-.saveText {
-  margin-left: 10px;
-}
-
-/* bootstrap-vueの大きいダイアログ継承 */
-.modal-lg {
-  max-width: 900px;
-}
 </style>
 
 <script>
 import HeaderNav from '~/components//HeaderNav.vue';
 import PenType from '~/components//PenType.vue';
+import PicturePreview from '~/components//PicturePreview.vue';
 
 export default {
   components: {
     HeaderNav,
     PenType,
+    PicturePreview,
   },
   data () {
     return({
@@ -360,10 +264,6 @@ export default {
       this.brushSizeViewCanvasContext.arc(this.brushSizeViewCanvas.width / 2, this.brushSizeViewCanvas.height / 2, brushSize / 2, 0, Math.PI * 2, false);
       this.brushSizeViewCanvasContext.fill();
     },
-    showModalButtonClick: function() {
-      this.imageBase64 = this.canvas.toDataURL();
-      this.$refs.previewModalRef.show();
-    },
     // ドロップダウンクリックされた時
     dropDownButtonClick: function(canvasMode) {
       this.canvasMode = canvasMode;
@@ -397,10 +297,6 @@ export default {
           break;
       }
       this.$refs.canvasConfirmModalRef.hide();
-    },
-    // プレビューボタンで閉じるボタン押された時
-    previewCloseButtonClick: function() {
-      this.$refs.previewModalRef.hide();
     },
 
     // キャンパスロード
