@@ -34,11 +34,7 @@
             <span class="pressureNum">{{ pressureNum }}</span>
 
             <!-- ストローク -->
-            <div class="float-right">
-              <div class="strokeCount">
-                ストローク: {{ strokeCount }}
-              </div>
-            </div>
+            <stroke-count :strokeCount="strokeCount" />
           </div>
         </div>
 
@@ -169,12 +165,14 @@ import HeaderNav from '~/components/HeaderNav.vue';
 import PenType from '~/components/PenType.vue';
 import PicturePreview from '~/components/PicturePreview.vue';
 import Notice from '~/components/Notice.vue';
+import StrokeCount from '~/components/StrokeCount.vue';
 
 export default {
   components: {
     HeaderNav,
     PenType,
     PicturePreview,
+    StrokeCount,
     Notice,
   },
   data () {
