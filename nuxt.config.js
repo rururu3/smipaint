@@ -12,8 +12,8 @@ module.exports = {
     base: '/smipaint/'
   },
   workbox: {
-  //   dev: true, // 開発環境でもPWA
-    swURL: '/smipaint/sw.js',
+    // dev: true, // 開発環境でもPWA
+    // swURL: '/smipaint/sw.js',
   },
   css: [
     '@fortawesome/fontawesome-free-webfonts',
