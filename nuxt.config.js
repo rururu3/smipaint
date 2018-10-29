@@ -11,10 +11,10 @@ module.exports = {
   router: {
     base: '/smipaint/'
   },
-  // workbox: {
+  workbox: {
   //   dev: true, // 開発環境でもPWA
-  //   swURL: '/smipaint/',
-  // },
+    swURL: '/smipaint/sw.js',
+  },
   css: [
     '@fortawesome/fontawesome-free-webfonts',
     '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',
