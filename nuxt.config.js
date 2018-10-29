@@ -5,7 +5,8 @@ module.exports = {
   ],
   manifest: {
     name: 'すみぺいんとぴーだぶりゅーえー',
-    lang: 'ja'
+    lang: 'ja',
+    start_url: '/smipaint/'
   },
   // workbox: {
   //   dev: true, //開発環境でもPWA
