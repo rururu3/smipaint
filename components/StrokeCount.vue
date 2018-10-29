@@ -7,7 +7,13 @@
 </template>
 
 <style>
+.float-right {
+  float: right;
+}
 
+.strokeCount {
+  font-size: 10pt;
+}
 </style>
 
 <script>

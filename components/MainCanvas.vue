@@ -20,23 +20,11 @@
           <canvas id="canvas" ref="canvas" />
         </div>
 
-        <div>
-          <div class="bottomMenuWrapper">
-            <!-- ブラシサイズ -->
-            <input class="brushSizeInput" type="range" min="1" max="30" step="1" v-model="brushSize"/>
-            <span class="brushSizeNum">{{ brushSize }}</span>
-
-            <!-- 筆圧影響 -->
-            <canvas id="brushSize" ref="brushSizeViewCanvas">
-            </canvas>
-            | <span class="toolText">筆圧影響</span>
-            <input class="pressureInput" type="range" min="0" max="9" step="1" v-model="pressureNum"/>
-            <span class="pressureNum">{{ pressureNum }}</span>
-
-            <!-- ストローク -->
-            <stroke-count :strokeCount="strokeCount" />
-          </div>
-        </div>
+        <brush-size
+          :strokeCount="strokeCount"
+          :brushSize="brushSize"
+          :pressureNum="pressureNum"
+          />
 
         <!-- 画像保存 -->
         <picture-preview :canvas="canvas" />
@@ -59,10 +47,6 @@
   float: left;
 }
 
-.float-right {
-  float: right;
-}
-
 .clear {
   clear: both;
 }
@@ -71,20 +55,8 @@
   border: 1px solid;
 }
 
-#brushSize {
-  width: 24px;
-  height: 24px;
-  border: 1px solid;
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
-}
-
 .times {
   color: #BBBBBB;
-}
-
-.toolText {
-  font-size: 10pt;
 }
 
 .transparentOnHover:hover {
@@ -96,68 +68,6 @@
   margin-top: 10px;
   margin-left: 10px;
 }
-
-.strokeCount {
-  font-size: 10pt;
-}
-
-.tweetText {
-  margin-bottom: 10px;
-  border: 1px solid;
-}
-
-.remainCharLength {
-  line-height: 40px;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-.bottomMenuWrapper {
-  height: 30px;
-  vertical-align: middle;
-}
-
-.brushSizeInput {
-  line-height: 30px;
-  width: 130px;
-  vertical-align: middle;
-}
-
-.pressureInput {
-  line-height: 30px;
-  width: 130px;
-  vertical-align: middle;
-}
-
-.brushSizeNum {
-  display: inline-block;
-  line-height: 30px;
-  vertical-align: middle;
-  width: 25px;
-  text-align: center;
-}
-
-#brushSize {
-  display: inline-block;
-  line-height: 30px;
-  vertical-align: middle;
-}
-
-.tweetButtonWrapper {
-  width: 100%;
-  height: 35px;
-}
-
-.twitterAvatar {
-  height: 32px;
-  width: 32px;
-}
-
-.twitterName {
-  color: #FFF;
-  margin-left: 5px;
-  margin-right: 5px;
-}
 </style>
 
 <script>
@@ -165,15 +75,15 @@ import HeaderNav from '~/components/HeaderNav.vue';
 import PenType from '~/components/PenType.vue';
 import PicturePreview from '~/components/PicturePreview.vue';
 import Notice from '~/components/Notice.vue';
-import StrokeCount from '~/components/StrokeCount.vue';
+import BrushSize from '~/components/BrushSize.vue';
 
 export default {
   components: {
     HeaderNav,
     PenType,
     PicturePreview,
-    StrokeCount,
     Notice,
+    BrushSize,
   },
   data () {
     return({
@@ -197,19 +107,9 @@ export default {
       canvas: null,
       context: null,
 
-      brushSizeViewCanvas: null,
-      brushSizeViewCanvasContext: null,
-
       // プレビュー
       previewImage: null,
     });
-  },
-  watch: {
-    brushSize: function(newValue, oldValue) {
-      this.drawBrushSize(newValue);
-    },
-  },
-  computed: {
   },
   methods: {
     // ペンのタイプ変更
@@ -219,14 +119,6 @@ export default {
         return;
       }
       this.penType = 'color';
-    },
-    drawBrushSize: function(brushSize) {
-      this.brushSizeViewCanvasContext.fillStyle = 'rgb(255, 255, 255)';
-      this.brushSizeViewCanvasContext.fillRect(0, 0, this.brushSizeViewCanvas.width, this.brushSizeViewCanvas.height);
-      this.brushSizeViewCanvasContext.beginPath();
-      this.brushSizeViewCanvasContext.fillStyle = 'rgb(0, 0, 0)';
-      this.brushSizeViewCanvasContext.arc(this.brushSizeViewCanvas.width / 2, this.brushSizeViewCanvas.height / 2, brushSize / 2, 0, Math.PI * 2, false);
-      this.brushSizeViewCanvasContext.fill();
     },
     // ドロップダウンクリックされた時
     dropDownButtonClick: function(canvasMode) {
@@ -412,14 +304,6 @@ export default {
       this.canvas.height = 600;
       this.context = this.canvas.getContext('2d');
 
-      // ブラシ
-      this.brushSizeViewCanvas = this.$refs.brushSizeViewCanvas;
-      this.brushSizeViewCanvas.width = 24;
-      this.brushSizeViewCanvas.height = 24;
-
-      this.brushSizeViewCanvasContext = this.brushSizeViewCanvas.getContext('2d');
-
-
       // キャンパスのイベント登録
       this.canvas.addEventListener('mousedown', (e) => {
         this.drawStart(e);
@@ -444,7 +328,6 @@ export default {
       this.previewImage = this.$refs.previewImage;
 
       this.rgba = this.getRGBA(this.penType);
-      this.drawBrushSize(this.brushSize);
       this.loadCanvas();
     });
   },
