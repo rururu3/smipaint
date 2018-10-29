@@ -6,14 +6,12 @@ module.exports = {
   manifest: {
     name: 'すみぺいんとぴーだぶりゅーえー',
     lang: 'ja',
-    // start_url: '/smipaint/'
   },
   router: {
     base: '/smipaint/'
   },
   workbox: {
     // dev: true, // 開発環境でもPWA
-    // swURL: '/smipaint/sw.js',
   },
   css: [
     '@fortawesome/fontawesome-free-webfonts',
